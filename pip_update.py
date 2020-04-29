@@ -13,7 +13,8 @@ else:
 # ver = "py -3.7-64 -m"
 # ver = "py -3.8 -m"
 py_ver = subprocess.run('python --version', stdout=subprocess.PIPE, encoding='utf-8').stdout
-print(f'\nModules Update {py_ver}', end='')
+print(f'\n{platform.node()}, {platform.system()}-{platform.release()}')
+print(f'Modules Update {py_ver}', end='')
 major, minor = py_ver.split()[1].split('.')[:2]
 ver = f'py -{major}.{minor} -m'
 
