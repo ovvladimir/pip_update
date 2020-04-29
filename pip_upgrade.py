@@ -8,7 +8,6 @@ else:
     from colorama import init
     init(autoreset=False)
 
-# ver = "py -3.7-32 -m"
 # ver = "py -3.7-64 -m"
 ver = "py -3.8 -m"
 
