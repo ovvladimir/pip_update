@@ -1,13 +1,9 @@
 # pyinstaller --onefile --icon=1.ico pip_upgrade.py
 import subprocess
-import msvcrt
 import platform
-if platform.release() == '10' and platform.version() >= '10.0.14393':
-    from ctypes import windll
-    windll.kernel32.SetConsoleMode(windll.kernel32.GetStdHandle(-11), 7)
-else:
-    from colorama import init
-    init(autoreset=False)
+import os
+
+os.system("")
 
 # ver = "py -3.7-32 -m"
 # ver = "py -3.7-64 -m"
@@ -90,6 +86,8 @@ if __name__ == "__main__":
         print('\033[F\033[Kcontinue?', 'no')
 
     print(f'\n{ORANGE}press any key to exit{RESET_ALL}')
-    _key_ = ord(msvcrt.getch())
-    if _key_:
-        print('[EXIT]')
+    if os.name == 'nt':
+        import msvcrt
+        _key_ = ord(msvcrt.getch())
+        if _key_:
+            print('[EXIT]')
