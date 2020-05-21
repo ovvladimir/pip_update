@@ -27,7 +27,7 @@ ORANGE, RED, GREEN, BLUE, RESET, RESET_ALL = \
 
 def check(VER):
     print(f'{GREEN}START{RESET}')
-    # Определяем имена модулей, требующих обновления (shell=True для Linux)
+    # Определяем имена модулей, требующих обновления
     cmd = eval(subprocess.run(
         f'{VER} pip list -o --format=json',  # shell=True,
         stdout=subprocess.PIPE).stdout)
