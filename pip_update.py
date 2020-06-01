@@ -5,32 +5,34 @@ import os
 
 os.system("")
 
-# ver = "py -3.7-32 -m"
-# ver = "py -3.7-64 -m"
-# ver = "py -3.8 -m"
 py_ver = subprocess.run('python --version', stdout=subprocess.PIPE, encoding='utf-8').stdout
 print(f'\n{platform.node()}, {platform.system()}-{platform.release()}')
 print(f'Modules Update {py_ver}', end='')
 major, minor = py_ver.split()[1].split('.')[:2]
-ver = f'py -{major}.{minor} -m'
+VER = f'py -{major}.{minor} -m'
+# VER = "py -3.7-32 -m"
+# VER = "py -3.7-64 -m"
+# VER = "py -3.7 -m"
 
 # Определяем имена модулей, запрещенных для обновления
 not_update = ['cloudpickle', 'tensorflow-probability', 'gast', 'tensorflow',
               'tensorflow-estimator', 'tensorboard', 'dlib', 'numpy',
               'VideoCapture', 'PyAudio', 'torch', 'torchvision', 'pocketsphinx',
               'PyOpenGL', 'PyOpenGL-accelerate', 'scikit-learn']
-'P.S. в scikit-learn с версии 0.22 закрыты некоторые общедоступные инструменты'
 
-ORANGE, RED, GREEN, BLUE, RESET, RESET_ALL = \
-    '\033[38;2;255;150;0m', '\033[31m', '\033[32m', '\033[34m', '\033[39m', '\033[0m'
+ORANGE, RED, GREEN, BLUE, RESET, RESET_ALL, UP = \
+    '\033[38;2;255;150;0m', '\033[31m', '\033[32m', '\033[34m', \
+    '\033[39m', '\033[0m', '\033[F\033[K'
 
 
-def check(VER):
+def check():
     print(f'{GREEN}START{RESET}')
     # Определяем имена модулей, требующих обновления
     cmd = eval(subprocess.run(
         f'{VER} pip list -o --format=json',  # shell=True,
         stdout=subprocess.PIPE).stdout)
+    if len(cmd) == 0:
+        return False
     # df = pandas.DataFrame(cmd)  # import pandas
     list_length = [0] * len(cmd[0])
     print(GREEN)
@@ -54,36 +56,35 @@ def check(VER):
     return cmd
 
 
-def updates(VER):
+def updates():
     # Обновляем
-    if len(result) != 0:
-        print(f'\n{GREEN}UPDATES')
-        try:
-            for name in result:
-                if name["name"] in not_update:
-                    print(f'{ORANGE}{name["name"]} - skipped without update')
-                else:
-                    print(f"{RESET}{'-' * 22}", name["name"], '-' * 22)
-                    subprocess.run(f'{VER} pip install -U {name["name"]}')
-            print(f'{GREEN}END OF UPDATES')
-        except Exception as e:
-            print(f'{RED}[ERROR] {e}')
+    if result:
+        query = input('\ncontinue? (y/n) ')
+        if query == 'y':
+            print(f'{UP}continue?', 'yes')
+            print(f'\n{GREEN}UPDATES')
+            try:
+                for name in result:
+                    if name["name"] in not_update:
+                        print(f'{ORANGE}{name["name"]} - skipped without update')
+                    else:
+                        print(f"{RESET}{'-' * 22}", name["name"], '-' * 22)
+                        subprocess.run(f'{VER} pip install -U {name["name"]}')
+                print(f'{GREEN}END OF UPDATES')
+                # Убеждаемся, что установленные пакеты имеют совместимые зависимости
+                print(f'\n{BLUE}[DEPENDENCE]{RESET}')
+                subprocess.run(f'{VER} pip check')
+            except Exception as e:
+                print(f'{RED}[ERROR] {e}')
+        else:
+            print(f'{UP}continue?', 'no')
     else:
         print(f'{GREEN}NO UPDATES')
 
-    # Убеждаемся, что установленные пакеты имеют совместимые зависимости
-    print(f'\n{BLUE}[DEPENDENCE]{RESET}')
-    subprocess.run(f'{VER} pip check')
-
 
 if __name__ == "__main__":
-    result = check(ver)
-    query = input('\ncontinue? (y/n) ')
-    if query == 'y':
-        print('\033[F\033[Kcontinue?', 'yes')
-        updates(ver)
-    else:
-        print('\033[F\033[Kcontinue?', 'no')
+    result = check()
+    updates()
 
     print(f'\n{ORANGE}press any key to exit{RESET_ALL}')
     if os.name == 'nt':
