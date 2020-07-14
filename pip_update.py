@@ -14,12 +14,19 @@ VER = f'py -{major}.{minor} -m'
 # VER = "py -3.7-64 -m"
 # VER = "py -3.7 -m"
 
+path = os.path.join(os.path.dirname(__file__), 'pipignore.txt')
+with open(path) as f:
+    not_update = f.read().split()
+"""
 # Определяем имена модулей, запрещенных для обновления
-not_update = ['cloudpickle', 'tensorflow-probability', 'gast', 'tensorflow',
-              'tensorflow-estimator', 'tensorboard', 'dlib', 'numpy',
-              'VideoCapture', 'PyAudio', 'torch', 'torchvision', 'pocketsphinx',
-              'PyOpenGL', 'PyOpenGL-accelerate', 'scikit-learn']
-
+not_update = [
+    'cloudpickle', 'tensorflow-probability', 'gast', 'tensorflow',
+    'tensorflow-estimator', 'tensorboard', 'dlib', 'scipy',
+    'VideoCapture', 'PyAudio', 'torch', 'torchvision', 'pocketsphinx',
+    'PyOpenGL', 'PyOpenGL-accelerate', 'scikit-learn',
+    'torch', 'torchvision'
+]
+"""
 ORANGE, RED, GREEN, BLUE, RESET, RESET_ALL, UP = \
     '\033[38;2;255;150;0m', '\033[31m', '\033[32m', '\033[34m', \
     '\033[39m', '\033[0m', '\033[F\033[K'
@@ -68,7 +75,7 @@ def updates():
                     if name["name"] in not_update:
                         print(f'{ORANGE}{name["name"]} - skipped without update')
                     else:
-                        print(f"{RESET}{'-' * 22}", name["name"], '-' * 22)
+                        print(f'{RESET}{name["name"].center(58, "-")}')
                         subprocess.run(f'{VER} pip install -U {name["name"]}')
                 print(f'{GREEN}END OF UPDATES')
                 # Убеждаемся, что установленные пакеты имеют совместимые зависимости
