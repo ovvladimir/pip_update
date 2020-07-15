@@ -1,4 +1,4 @@
-# pyinstaller --onefile --icon=1.ico pip_upgrade.py
+# pyinstaller --onefile --icon=1.ico pip_update.py
 import subprocess
 import platform
 import os
@@ -75,7 +75,7 @@ def updates():
                     if name["name"] in not_update:
                         print(f'{ORANGE}{name["name"]} - skipped without update')
                     else:
-                        print(f'{RESET}{name["name"].center(58, "-")}')
+                        print(f'{RESET}{name["name"].center(70, "-")}')
                         subprocess.run(f'{VER} pip install -U {name["name"]}')
                 print(f'{GREEN}END OF UPDATES')
                 # Убеждаемся, что установленные пакеты имеют совместимые зависимости
