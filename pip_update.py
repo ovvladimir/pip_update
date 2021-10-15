@@ -7,7 +7,7 @@ os.system("")
 
 py_ver = subprocess.run('python --version', stdout=subprocess.PIPE, encoding='utf-8').stdout
 print(f'\n{platform.node()}, {platform.system()}-{platform.release()}')
-print(f'Modules Update {py_ver}', end='')
+print(f'Updating modules {py_ver}', end='')
 major, minor = py_ver.split()[1].split('.')[:2]
 VER = f'py -{major}.{minor} -m'
 # VER = "py -3.7-32 -m"
@@ -41,17 +41,18 @@ def check():
     if len(cmd) == 0:
         return False
     # df = pandas.DataFrame(cmd)  # import pandas
-    list_length = [0] * len(cmd[0])
+    c = max(cmd, key=len)
+    list_length = [0] * len(c)
     print(GREEN)
     for i in range(len(cmd)):
         for j, couple in enumerate(cmd[i].items()):
             length = max(len(couple[0]), len(couple[1]))
             if list_length[j] < length:
                 list_length[j] = length
-    for i, key in enumerate(cmd[0].keys()):
+    for i, key in enumerate(c.keys()):
         print(key, end=(list_length[i] - len(key) + 2) * ' ')
     print(BLUE)
-    for i in range(len(cmd[0])):
+    for i in range(len(c)):
         print(list_length[i] * '-', end='  ')
     print(RESET)
     for i in range(len(cmd)):
