@@ -50,7 +50,7 @@ def check():
             if list_length[j] < length:
                 list_length[j] = length
     for i, key in enumerate(c.keys()):
-        print(key, end=(list_length[i] - len(key) + 2) * ' ')
+        print(key.replace('_', ' '), end=(list_length[i] - len(key) + 2) * ' ')
     print(BLUE)
     for i in range(len(c)):
         print(list_length[i] * '-', end='  ')
