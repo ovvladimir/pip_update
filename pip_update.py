@@ -36,8 +36,7 @@ def check():
     print(f'{GREEN}START{RESET}')
     # Определяем имена модулей, требующих обновления
     cmd = eval(subprocess.run(
-        f'{VER} pip list -o --format=json',  # shell=True,
-        stdout=subprocess.PIPE).stdout)
+        f'{VER} pip list -o --format=json', stdout=subprocess.PIPE).stdout)
     if len(cmd) == 0:
         return False
     # df = pandas.DataFrame(cmd)  # import pandas
