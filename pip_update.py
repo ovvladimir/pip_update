@@ -36,7 +36,7 @@ def check():
     print(f'{GREEN}START{RESET}')
     # Определяем имена модулей, требующих обновления
     cmd = popen(f'{VER} pip list -o --format=json').read()
-    cmd = eval(cmd[:cmd.find('}]') + 2])
+    cmd = eval(cmd[:cmd.find(']') + 1])
     if len(cmd) == 0:
         return False
     # df = pandas.DataFrame(cmd)  # import pandas
